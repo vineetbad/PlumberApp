@@ -9,14 +9,53 @@
 import UIKit
 
 class SignatureViewController: UIViewController {
+    var path = UIBezierPath()
+    var startPoint = CGPoint()
+    var touchPoint = CGPoint()
     
     @IBOutlet var signatureDraw: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
         signatureDraw.clipsToBounds = true
+        signatureDraw.isMultipleTouchEnabled = false
         signatureDraw.dropShadow()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        if let point = touch?.location(in: signatureDraw){
+            startPoint = point
+        }
+        
+    }
+    
+    func draw() {
+        let strokeLayer = CAShapeLayer()
+        strokeLayer.fillColor = nil
+        strokeLayer.strokeColor = UIColor.black.cgColor
+        strokeLayer.path = path.cgPath
+        signatureDraw.layer.addSublayer(strokeLayer)
+        signatureDraw.setNeedsDisplay()
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        if let point = touch?.location(in: signatureDraw){
+            touchPoint = point
+        }
+        path.move(to: startPoint)
+        path.addLine(to: touchPoint)
+        startPoint = touchPoint
+        draw()
+    }
+    
+    @IBAction func clearSignature(_ sender: Any) {
+        
+        path.removeAllPoints()
+        signatureDraw.layer.sublayers = nil
+        signatureDraw.setNeedsDisplay()
+        
+    }
     
     
 }
