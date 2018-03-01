@@ -8,10 +8,12 @@
 
 import UIKit
 import Alamofire
+import SwiftyJSON
 
 class LogInViewController: UIViewController {
     
     let baseURL : String = "http://108.80.86.132:90/api/Contact"
+    
 
     
     //Outlets
@@ -41,20 +43,57 @@ class LogInViewController: UIViewController {
         let currentURL = baseURL + "/AutenthicateUser"
         let parametersUser : Parameters = ["email" : username, "password" : password]
         Alamofire.request(currentURL, method: .get, parameters: parametersUser).responseJSON { (response) in
-            print(response)
+            if response.result.isFailure{
+                self.alertFunc(message: "Could not connect to the Internet")
+            }
+            else {
+                
+                
+                let loginJSON : JSON = JSON(response.result.value!)
+                if loginJSON["message"].stringValue == "Successful"{
+                    print(loginJSON)
+                    self.performSegue(withIdentifier: "LoginSegue", sender: self)
+                }
+                else {
+                    self.alertFunc(message: loginJSON["message"].stringValue)
+                }
+            }
         }
-        performSegue(withIdentifier: "LoginSegue", sender: nil)
+        
     }
     
+    func alertFunc(message: String){
+        
+        let alert = UIAlertController(title: "Please Try Again", message: message, preferredStyle: .alert)
+        let actionBack = UIAlertAction(title: "Try Again", style: .cancel) { (action) in
+                //print("test")
+            }
+        alert.addAction(actionBack)
+        present(alert, animated: true, completion: nil)
+        
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        navigationController?.navigationBar.isHidden = true
         
         loginButtonLabel.layer.cornerRadius = 16.0
         rememberMe.isOn = false
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "LoginSegue" {
+            guard let pendingVC = segue.destination as? PendingContractsTableViewController else {return}
+            pendingVC.contractWork = ["""
+Contract 1
+Contract 1 Date
+Contract 1 Customer
+"""]
+            
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,14 +102,11 @@ class LogInViewController: UIViewController {
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
+
 
 }

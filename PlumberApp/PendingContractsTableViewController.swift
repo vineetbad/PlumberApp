@@ -13,11 +13,12 @@ class PendingContractsTableViewController: UITableViewController {
     let cellID = "AlamoFireID"
     
     //This is the database part
-    let contractWork = ["Contract1", "Contract2", "Contract3"]
+    var contractWork = ["Contract1", "Contract2", "Contract3"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        navigationController?.navigationBar.isHidden = false
+     
         navigationItem.title = "Pending Work"
         navigationController?.navigationBar.prefersLargeTitles = true
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
@@ -39,6 +40,9 @@ class PendingContractsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
         cell.textLabel?.text = contractWork[indexPath.row]
+        cell.textLabel?.numberOfLines = 0;
+        cell.textLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
+        
         return cell
     }
 
