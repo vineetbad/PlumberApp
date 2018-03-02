@@ -39,6 +39,13 @@ class LogInViewController: UIViewController {
         
     }
     
+    
+    //Log Out from next page thing:
+    @IBAction func logOut(_ sender: UIStoryboardSegue){
+        navigationController?.navigationBar.isHidden = true
+
+        print("done")
+    }
     func loginCheck(username: String, password: String){
         let currentURL = baseURL + "/AutenthicateUser"
         let parametersUser : Parameters = ["email" : username, "password" : password]

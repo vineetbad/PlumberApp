@@ -127,6 +127,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="KEI-XW-Mx8">
+                        <barButtonItem key="leftBarButtonItem" title="Log Out" id="g1K-gg-aju">
+                            <connections>
+                                <segue destination="ElB-zd-VEH" kind="unwind" unwindAction="logOut:" id="Vz4-32-BuZ"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="OFr-gC-9V1">
                             <connections>
                                 <segue destination="Ixy-og-pG0" kind="show" id="DPh-JW-EBR"/>
@@ -135,6 +140,7 @@
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q8q-vf-eBr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="ElB-zd-VEH" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2990" y="115"/>
         </scene>
