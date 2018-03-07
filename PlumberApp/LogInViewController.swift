@@ -12,7 +12,7 @@ import SwiftyJSON
 
 class LogInViewController: UIViewController {
     
-    let baseURL : String = "http://108.80.86.132:90/api/Contact"
+    let baseURL : String = "http://ec2-18-217-91-105.us-east-2.compute.amazonaws.com:93/api"
     
 
     
@@ -47,25 +47,38 @@ class LogInViewController: UIViewController {
         print("done")
     }
     func loginCheck(username: String, password: String){
-        let currentURL = baseURL + "/AutenthicateUser"
-        let parametersUser : Parameters = ["email" : username, "password" : password]
-        Alamofire.request(currentURL, method: .get, parameters: parametersUser).responseJSON { (response) in
+        let currentURL = baseURL + "/order_form/Get_Assigned_Task/"
+        let parametersUser : Parameters = ["username" : username, "password" : password]
+        Alamofire.request(currentURL, method: .get, parameters: parametersUser).responseData { (response) in
             if response.result.isFailure{
                 self.alertFunc(message: "Could not connect to the Internet")
             }
-            else {
+            else{
                 
-                
-                let loginJSON : JSON = JSON(response.result.value!)
-                if loginJSON["message"].stringValue == "Successful"{
-                    print(loginJSON)
-                    self.performSegue(withIdentifier: "LoginSegue", sender: self)
-                }
-                else {
-                    self.alertFunc(message: loginJSON["message"].stringValue)
-                }
+                let valueReturn = String(data : response.result.value!, encoding : String.Encoding.utf8)
+                let JSONReturn = JSON.init(parseJSON: valueReturn!)
+                print(JSONReturn["id"])
+                print(JSONReturn["service_amount"])
+
             }
         }
+        //{ (response) in
+//            if response.result.isFailure{
+//                self.alertFunc(message: "Could not connect to the Internet")
+//            }
+//            else {
+//
+//
+//                let loginJSON : JSON = JSON(response.result.value!)
+//                if loginJSON["message"].stringValue == "Successful"{
+//                    print(loginJSON)
+//                    self.performSegue(withIdentifier: "LoginSegue", sender: self)
+//                }
+//                else {
+//                    self.alertFunc(message: loginJSON["message"].stringValue)
+//                }
+//            }
+//        }
         
     }
     
