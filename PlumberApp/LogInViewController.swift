@@ -14,7 +14,6 @@ class LogInViewController: UIViewController {
     
     let baseURL : String = "http://ec2-18-217-91-105.us-east-2.compute.amazonaws.com:93/api"
     
-
     
     //Outlets
     @IBOutlet var loginButtonLabel: UIButton!
@@ -43,6 +42,7 @@ class LogInViewController: UIViewController {
     //Log Out from next page thing:
     @IBAction func logOut(_ sender: UIStoryboardSegue){
         navigationController?.navigationBar.isHidden = true
+        //TODO: Post all the GlobalJSONValue to the database and also make it null again
 
         print("done")
     }
@@ -54,18 +54,20 @@ class LogInViewController: UIViewController {
                 self.alertFunc(message: "Could not connect to the Internet")
             }
             else{
-                
                 let valueReturn = String(data : response.result.value!, encoding : String.Encoding.utf8)
                 let JSONReturn = JSON.init(parseJSON: valueReturn!)
-                print(JSONReturn["id"])
-                print(JSONReturn["service_amount"])
+                //ASK VIK FOR THE MESSAGE API in this. Doesn't look like we have one. This helps if there is no login. I can default to username or password is not working
+                print(JSONReturn["message"])
+
+
+                //if everything is good then go here:
+                GlobalJSONValues.jsonGlobal = JSONReturn
+                self.performSegue(withIdentifier: "LoginSegue", sender: self)
 
             }
         }
         //{ (response) in
-//            if response.result.isFailure{
-//                self.alertFunc(message: "Could not connect to the Internet")
-//            }
+        //          //MARK: IF THERE IS A message in the response value then need to have that here so that an alert function can be thrown
 //            else {
 //
 //
@@ -86,7 +88,6 @@ class LogInViewController: UIViewController {
         
         let alert = UIAlertController(title: "Please Try Again", message: message, preferredStyle: .alert)
         let actionBack = UIAlertAction(title: "Try Again", style: .cancel) { (action) in
-                //print("test")
             }
         alert.addAction(actionBack)
         present(alert, animated: true, completion: nil)
@@ -101,32 +102,17 @@ class LogInViewController: UIViewController {
         loginButtonLabel.layer.cornerRadius = 16.0
         rememberMe.isOn = false
 
-        // Do any additional setup after loading the view.
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "LoginSegue" {
-            guard let pendingVC = segue.destination as? PendingContractsTableViewController else {return}
-            pendingVC.contractWork = ["""
-Contract 1
-Contract 1 Date
-Contract 1 Customer
-"""]
-            
-        }
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-
-    
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     
 
 
+}
+
+struct GlobalJSONValues {
+    static var jsonGlobal : JSON = JSON.null
 }
