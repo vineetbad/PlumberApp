@@ -47,45 +47,45 @@ class LogInViewController: UIViewController {
         print("done")
     }
     func loginCheck(username: String, password: String){
+        
+        
+        //The url + the API Method to authenticate someone:
         let currentURL = baseURL + "/order_form/Get_Assigned_Task/"
+        //parameters for the Method Get_Assigned_Task:
         let parametersUser : Parameters = ["username" : username, "password" : password]
+        //Alamofire requesting this from the url using the parameters above
         Alamofire.request(currentURL, method: .get, parameters: parametersUser).responseData { (response) in
             if response.result.isFailure{
+                
+                //If can't connect to the database this happens:
                 self.alertFunc(message: "Could not connect to the Internet")
             }
             else{
+                //If can connect to the internet we need to get the result value back
                 let valueReturn = String(data : response.result.value!, encoding : String.Encoding.utf8)
                 let JSONReturn = JSON.init(parseJSON: valueReturn!)
-                //ASK VIK FOR THE MESSAGE API in this. Doesn't look like we have one. This helps if there is no login. I can default to username or password is not working
-                print(JSONReturn["message"])
+                //This if else is for if the username or password is incorrect
+                if JSONReturn["Message"] == "An error has occurred."{
+                    self.alertFunc(message: "Incorrect Username of Password")
+                }
+                else {
+                    
+                    //if everything is good then go here:
+                    GlobalJSONValues.jsonGlobal = JSONReturn
+                    self.performSegue(withIdentifier: "LoginSegue", sender: self)
+
+                }
 
 
-                //if everything is good then go here:
-                GlobalJSONValues.jsonGlobal = JSONReturn
-                self.performSegue(withIdentifier: "LoginSegue", sender: self)
 
             }
         }
-        //{ (response) in
-        //          //MARK: IF THERE IS A message in the response value then need to have that here so that an alert function can be thrown
-//            else {
-//
-//
-//                let loginJSON : JSON = JSON(response.result.value!)
-//                if loginJSON["message"].stringValue == "Successful"{
-//                    print(loginJSON)
-//                    self.performSegue(withIdentifier: "LoginSegue", sender: self)
-//                }
-//                else {
-//                    self.alertFunc(message: loginJSON["message"].stringValue)
-//                }
-//            }
-//        }
+        
         
     }
-    
+    //This sets up an alertFunction using the message that you input into it
+
     func alertFunc(message: String){
-        
         let alert = UIAlertController(title: "Please Try Again", message: message, preferredStyle: .alert)
         let actionBack = UIAlertAction(title: "Try Again", style: .cancel) { (action) in
             }
@@ -112,7 +112,7 @@ class LogInViewController: UIViewController {
 
 
 }
-
+//This is the global JSON
 struct GlobalJSONValues {
     static var jsonGlobal : JSON = JSON.null
 }

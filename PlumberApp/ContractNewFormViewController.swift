@@ -46,8 +46,6 @@ class ContractNewFormViewController: FormViewController {
         }
             
             
-            //DELETE HERE
-            
             
             
             <<< DateInlineRow() {
