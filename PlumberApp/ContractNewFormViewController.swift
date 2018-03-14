@@ -8,8 +8,47 @@
 
 import UIKit
 import Eureka
+import SwiftyJSON
 
 class ContractNewFormViewController: FormViewController {
+    //TODO: Save Function:
+    //GlobalJSONValues.jsonGlobal[(tableView.indexPathForSelectedRow?.row)!].arrayObject?.remove(at: 0)
+    //Might have to pass the number tableView.indexp... to a number here and do it from there. Let's see
+
+    
+    var currentDataJSON : JSON = [
+        "features" : "Features:Bathroom Faucet Widespread;",
+        "paid_by" : "check",
+        "IsActive" : JSON.null,
+        "Collected" : "yes",
+        "start_order_date" : JSON.null,
+        "Auth_Amount" : "5000",
+        "Auth" : "124996",
+        "service_fee" : "5000",
+        "id" : 1648,
+        "is_paid" : JSON.null,
+        "submit_signature" : JSON.null,
+        "brands" : "Brands:Price Pfister ;",
+        "finish" : "Finish:Chrome;",
+        "Invoice_Number" : "801648",
+        "resolution" : "Resolution:Snaked sink to remove clog ;",
+        "Check" : "5345345",
+        "save_signature" : JSON.null,
+        "ModifiedDate" : JSON.null,
+        "note" : JSON.null,
+        "description" : "Description:Master bathroom sink is clogged;",
+        "disclaimer" : "Aladdin’s Plumbing is not responsible for damage to clay, orangeberg or improperly installed lines or pre-existing conditions.,The law requires that AP gives you a notice explaining your right to cancel for any work performed that is paid for. Please initial If Aladdin’s Plumbing has given you a notice of the ‘3 Day Right to Cancel”. This contractor caries commercial general liability insurance written by Farmers Insurance. You may call 831.688.8664 to check coverage.",
+        "sign_bool" : JSON.null,
+        "order_date" : JSON.null,
+        "service_type" : "ServiceType:service type1;ServiceType1:service type 2;ServiceType2:service type 3;ServiceType3:service type 4;ServiceType4:;ServiceType5:;ServiceType6:;ServiceType7:;ServiceType8:;ServiceType9:;",
+        "total_due" : "90",
+        "customer_of" : "NON-AHS",
+        "diagnosis" : "Diagnosis:Hair ball in drain preventing water flow;",
+        "service_amount" : "Amount:50;Amount1:10;Amount2:20;Amount3:10;Amount4:;Amount5:;Amount6:;Amount7:;Amount8:;Amount9:;",
+        "product" : "Location:Kitchen;",
+    ]
+
+    var isNewContract = true
     
     @IBAction func signaturePage(_ sender: Any) {
         print("Signature")
@@ -19,10 +58,64 @@ class ContractNewFormViewController: FormViewController {
         }
         
         
+        
     }
+    
+ 
+    
+    func checkIfBlankAndOthersTextRow(tagChosen: String,row: (TextRow)) {
+        if currentDataJSON[row.tag!].exists() && currentDataJSON[row.tag!].string != ""{
+            row.value = currentDataJSON[row.tag!].string
+        }
+        else {
+            row.placeholder = tagChosen
+            row.placeholderColor = UIColor.gray
+        }
+        
+        
+    }
+    
+    func checkIfBlankAndOthersPushRow(tagChosen: String, row: (PushRow<String>)){
+        if currentDataJSON[row.tag!].exists() && currentDataJSON[row.tag!].string != ""{
+            row.value = currentDataJSON[row.tag!].string
+            row.baseCell.backgroundColor = UIColor.white
+        }
+        else {
+            row.noValueDisplayText = tagChosen
+        }
+        row.selectorTitle = "Pick One"
+    }
+    
+    func checkIfBlankAndOthersNameRow(tagChosen: String,row: (NameRow)) {
+        if currentDataJSON[row.tag!].exists() && currentDataJSON[row.tag!].string != ""{
+            row.value = currentDataJSON[row.tag!].string
+        }
+        else {
+            row.placeholder = tagChosen
+            row.placeholderColor = UIColor.gray
+        }
+        
+        
+    }
+    func checkIfBlankAndOthersPhoneRow(tagChosen: String,row: (PhoneRow)) {
+        if currentDataJSON[row.tag!].exists() && currentDataJSON[row.tag!].string != ""{
+            row.value = currentDataJSON[row.tag!].string
+        }
+        else {
+            row.placeholder = tagChosen
+            row.placeholderColor = UIColor.gray
+        }
+        
+        
+    }
+
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(currentDataJSON)
+        //
         navigationItem.title = "New Job"
         navigationController?.navigationBar.prefersLargeTitles = false
 
@@ -39,24 +132,24 @@ class ContractNewFormViewController: FormViewController {
                 $0.tag = "customer"
                 $0.hidden = "$option != 'Main'"
             }
-            <<< TextRow(){row in
-                row.title = "CUSTOMER:"
-                row.placeholder = "Customer Type"
-                row.placeholderColor = UIColor.gray
-        }
+//            <<< TextRow(){row in
+//                row.title = "CUSTOMER:"
+//                row.placeholder = "Customer Type"
+//                row.placeholderColor = UIColor.gray
+//        }
             
             
             
             
-            <<< DateInlineRow() {
-                $0.title = "DateInlineRow"
-                $0.value = Date()
-            }
-            
-            <<< TimeInlineRow(){
-                $0.title = "TimeInlineRow"
-                $0.value = Date()
-            }
+//            <<< DateInlineRow() {
+//                $0.title = "DateInlineRow"
+//                $0.value = Date()
+//            }
+//
+//            <<< TimeInlineRow(){
+//                $0.title = "TimeInlineRow"
+//                $0.value = Date()
+//            }
 //            <<< SwitchRow("Show Next Row"){
 //                $0.title = $0.tag
 //            }
@@ -89,98 +182,135 @@ class ContractNewFormViewController: FormViewController {
 //            }
 
             
-            <<< PushRow<String>() {
-                $0.title = "PushRow"
-                $0.options = ["💁🏻", "🍐", "👦🏼", "🐗", "🐼", "🐻"]
-                $0.value = "👦🏼"
-                $0.selectorTitle = "Choose an Emoji!"
-                }.onPresent { from, to in
-                    to.dismissOnSelection = true
-                    to.dismissOnChange = true
-            }
+            
 
             //TO HERE
+            
+            
+            <<< PushRow<String>() {row in
+                row.tag = "customer_of"
+                row.title = "CUSTOMER OF:"
+                row.options = ["AHS", "NON-AHS"]
+                checkIfBlankAndOthersPushRow(tagChosen: "Customer Type" ,row: row)
+                row.selectorTitle = "Pick One"
+            }
 
-            <<< IntRow(){row in
+            <<< TextRow(){row in
+                row.tag = "Dispatch_ID"
+                checkIfBlankAndOthersTextRow(tagChosen: "Dispatch Id", row: row)
                 row.title = "DISPATCH ID:"
-                row.placeholder = "Dispatch Id"
-                row.placeholderColor = UIColor.gray
         }
             <<< TextRow(){row in
+                row.tag = "GateCode"
                 row.title = "GATE CODE:"
-                row.placeholder = "Gate Code"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankAndOthersTextRow(tagChosen: "Gate Code", row: row)
+            }
+            <<< PushRow<String>() {row in
+                row.tag = "tech"
+                row.title = "PLUMBER:"
+                row.options = ["Vik Baid", "Aladdin", "Liz Alagiannis", "Stephen Young", "Bhakti Gabbard", "Emily Montoya", "Jack Nagase", "Dylan Ogle", "Taylor Cunningham", "Vik Baid2"]
+                checkIfBlankAndOthersPushRow(tagChosen: "Plumber Name",row: row)
+                row.selectorTitle = "Choose a Plumber"
+                
             }
             
 
             <<< NameRow(){row in
-                row.title = "PLUMBER:"
-                row.placeholder = "Plumber"
-                row.placeholderColor = UIColor.gray
-        }
-            <<< NameRow(){row in
+                row.tag = "fname"
                 row.title = "FIRST NAME:"
-                row.placeholder = "First Name"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankAndOthersNameRow(tagChosen: "First Name", row: row)
+
         }
             <<< NameRow(){row in
+                row.tag = "lname"
                 row.title = "LAST NAME:"
-                row.placeholder = "Last Name"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankAndOthersNameRow(tagChosen: "Last Name", row: row)
+                
             }
+            
             <<< TextRow(){row in
+                row.tag = "address"
                 row.title = "ADDRESS:"
-                row.placeholder = "Address"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankAndOthersTextRow(tagChosen: "Address", row: row)
             }
             <<< TextRow(){row in
+                row.tag = "city"
                 row.title = "CITY:"
-                row.placeholder = "City"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankAndOthersTextRow(tagChosen: "City", row: row)
         }
+            
             <<< TextRow(){row in
+                row.tag = "state"
                 row.title = "STATE:"
-                row.placeholder = "State"
-                row.placeholderColor = UIColor.gray
-        }
+                checkIfBlankAndOthersTextRow(tagChosen: "State", row: row)
+            }
             <<< ZipCodeRow(){row in
+                row.tag = "zip"
                 row.title = "ZIP:"
-                row.placeholder = "Zip"
-                row.placeholderColor = UIColor.gray
-        }
+                if currentDataJSON[row.tag!].exists() && currentDataJSON[row.tag!].string != ""{
+                    row.value = currentDataJSON[row.tag!].string
+                }
+                else {
+                    row.placeholder = "Zip"
+                    row.placeholderColor = UIColor.gray
+                }
+                //TODO: Find a way to convert to Int
+                
+            }
             <<< PhoneRow(){row in
+                row.tag = "ph_primary"
                 row.title = "PHONE:"
-                row.placeholder = "Phone (primary)"
-                row.placeholderColor = UIColor.gray
-        }
+                checkIfBlankAndOthersPhoneRow(tagChosen: "Phone (primary)", row: row)
+            }
+            
             <<< PhoneRow(){row in
+                row.tag = "ph_alternate"
                 row.title = "PHONE:"
-                row.placeholder = "Phone (secondary)"
-                row.placeholderColor = UIColor.gray
-        }
+                checkIfBlankAndOthersPhoneRow(tagChosen: "Phone (secondary)", row: row)
+                
+            }
             <<< PhoneRow(){row in
+                row.tag = "ph_mobile"
                 row.title = "MOBILE:"
-                row.placeholder = "Mobile"
-                row.placeholderColor = UIColor.gray
-        }
+                checkIfBlankAndOthersPhoneRow(tagChosen: "Mobile", row: row)
+            }
+            
             <<< EmailRow(){row in
+                row.tag = "email"
                 row.title = "EMAIL:"
-                row.placeholder = "Email ID"
-                row.placeholderColor = UIColor.gray
-        }
+                if currentDataJSON[row.tag!].exists() && currentDataJSON[row.tag!].string != ""{
+                    row.value = currentDataJSON[row.tag!].string
+                }
+                else {
+                    row.placeholder = "Email ID"
+                    row.placeholderColor = UIColor.gray
+                }
+            }
             <<< TextRow(){row in
+                row.tag = "tenant"
                 row.title = "TENANT:"
-                row.placeholder = "Tenant"
-                row.placeholderColor = UIColor.gray
-        }
+                checkIfBlankAndOthersTextRow(tagChosen: "Tenant", row: row)
+            }
             <<< PhoneRow(){row in
+                row.tag = "tenant_phone"
                 row.title = "TENANT PHONE:"
-                row.placeholder = "Tenant Phone"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankAndOthersPhoneRow(tagChosen: "Tenant Phone", row: row)
+                
         }
         form +++ Section("Specifications"){
             $0.tag = "specs"
             $0.hidden = "$option != 'Specs'"
+            }
+            
+            <<< PushRow<String>() {row in
+                row.tag = "description[Description]"
+                row.title = "DESCRIPTION:"
+                row.options = ["Test 2", "Leaking Toilet"]
+                checkIfBlankAndOthersPushRow(tagChosen: "Description",row: row)
+                row.selectorTitle = "Choose a Plumber"
+                }.onPresent { from, to in
+                    to.dismissOnSelection = true
+                    to.dismissOnChange = true
             }
             
             <<< TextRow(){row in
@@ -384,16 +514,6 @@ class ContractNewFormViewController: FormViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
 
 }

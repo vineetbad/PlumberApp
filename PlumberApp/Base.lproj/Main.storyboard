@@ -134,15 +134,18 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="OFr-gC-9V1">
                             <connections>
-                                <segue destination="Ixy-og-pG0" kind="show" id="DPh-JW-EBR"/>
+                                <segue destination="Ixy-og-pG0" kind="show" identifier="NewForm" id="CBK-m0-FZP"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="Ixy-og-pG0" kind="show" identifier="TableToFormSegue" id="dPD-J8-QWd"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q8q-vf-eBr" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="ElB-zd-VEH" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2990" y="115"/>
+            <point key="canvasLocation" x="2681" y="104"/>
         </scene>
         <!--Contract New Form View Controller-->
         <scene sceneID="fWL-RB-fdj">
@@ -377,4 +380,7 @@
             <point key="canvasLocation" x="1012" y="115"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="CBK-m0-FZP"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class PendingContractsTableViewController: UITableViewController {
     //input the alamofire stuff here
@@ -48,7 +49,18 @@ class PendingContractsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        <#code#>
+        performSegue(withIdentifier: "TableToFormSegue", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "TableToFormSegue"{
+            if let destinationVC = segue.destination as? ContractNewFormViewController{
+                destinationVC.currentDataJSON = JSON.null
+                destinationVC.currentDataJSON = GlobalJSONValues.jsonGlobal[(tableView.indexPathForSelectedRow?.row)!]
+                destinationVC.isNewContract = false
+            }
+            
+        }
     }
 
 
