@@ -66,7 +66,7 @@ class LogInViewController: UIViewController {
                 let JSONReturn = JSON.init(parseJSON: valueReturn!)
                 //This if else is for if the username or password is incorrect
                 if JSONReturn["Message"] == "An error has occurred."{
-                    self.alertFunc(message: "Incorrect Username of Password")
+                    self.alertFunc(message: "Incorrect Username or Password")
                 }
                 else {
                     

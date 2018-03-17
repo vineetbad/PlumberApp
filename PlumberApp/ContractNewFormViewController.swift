@@ -17,7 +17,7 @@ class ContractNewFormViewController: FormViewController {
 
     
     var currentDataJSON : JSON = [
-        "features" : "Features:Bathroom Faucet Widespread;",
+        "features" : "Features:Bathroom Faucet Widespread;",//DONE
         "paid_by" : "check",
         "IsActive" : JSON.null,
         "Collected" : "yes",
@@ -28,23 +28,17 @@ class ContractNewFormViewController: FormViewController {
         "id" : 1648,
         "is_paid" : JSON.null,
         "submit_signature" : JSON.null,
-        "brands" : "Brands:Price Pfister ;",
-        "finish" : "Finish:Chrome;",
+        "brands" : "Brands:Price Pfister ;",//DONE
+        "finish" : "Finish:Chrome;", //DONE
         "Invoice_Number" : "801648",
-        "resolution" : "Resolution:Snaked sink to remove clog ;",
         "Check" : "5345345",
         "save_signature" : JSON.null,
         "ModifiedDate" : JSON.null,
         "note" : JSON.null,
-        "description" : "Description:Master bathroom sink is clogged;",
         "disclaimer" : "Aladdin’s Plumbing is not responsible for damage to clay, orangeberg or improperly installed lines or pre-existing conditions.,The law requires that AP gives you a notice explaining your right to cancel for any work performed that is paid for. Please initial If Aladdin’s Plumbing has given you a notice of the ‘3 Day Right to Cancel”. This contractor caries commercial general liability insurance written by Farmers Insurance. You may call 831.688.8664 to check coverage.",
         "sign_bool" : JSON.null,
         "order_date" : JSON.null,
-        "service_type" : "ServiceType:service type1;ServiceType1:service type 2;ServiceType2:service type 3;ServiceType3:service type 4;ServiceType4:;ServiceType5:;ServiceType6:;ServiceType7:;ServiceType8:;ServiceType9:;",
         "total_due" : "90",
-        "customer_of" : "NON-AHS",
-        "diagnosis" : "Diagnosis:Hair ball in drain preventing water flow;",
-        "service_amount" : "Amount:50;Amount1:10;Amount2:20;Amount3:10;Amount4:;Amount5:;Amount6:;Amount7:;Amount8:;Amount9:;",
         "product" : "Location:Kitchen;",
     ]
 
@@ -75,15 +69,21 @@ class ContractNewFormViewController: FormViewController {
         
     }
     
+    
     func checkIfBlankAndOthersPushRow(tagChosen: String, row: (PushRow<String>)){
         if currentDataJSON[row.tag!].exists() && currentDataJSON[row.tag!].string != ""{
             row.value = currentDataJSON[row.tag!].string
-            row.baseCell.backgroundColor = UIColor.white
+            row.cell.detailTextLabel?.textColor = UIColor.black
         }
         else {
             row.noValueDisplayText = tagChosen
         }
         row.selectorTitle = "Pick One"
+//        row.onChange({ [unowned self] row in
+//            self.checkIfBlankAndOthersPushRow(tagChosen: tagChosen, row: row)
+//            print("This onChange Works")
+//        })
+        
     }
     
     func checkIfBlankAndOthersNameRow(tagChosen: String,row: (NameRow)) {
@@ -105,17 +105,97 @@ class ContractNewFormViewController: FormViewController {
             row.placeholder = tagChosen
             row.placeholderColor = UIColor.gray
         }
+       
         
         
     }
+    
+    func checkIfBlankStringToComponentText(row: TextRow, inputArray: [String]?, name: String, number: Int){
+        
+        if inputArray!.count > number{
+            let inputArrayUnwrapped = (inputArray?[number])!
+            if inputArrayUnwrapped == name+":" {
+                row.placeholder = ""
+                row.placeholder = name
+                row.placeholderColor = UIColor.gray
+                
+            }
+            else {
+                let update = inputArrayUnwrapped.replacingOccurrences(of: name+":", with: "")
+                row.value = update
+                
+            }
+        }
+    }
+    
+    func checkIfBlankStringToComponentDecimal(row: DecimalRow, inputArray: [String]?, name: String, number: Int){
+        
+        if inputArray!.count > number{
+            let inputArrayUnwrapped = (inputArray?[number])!
+            if inputArrayUnwrapped == name+":" {
+                row.placeholder = ""
+                row.placeholder = name
+                row.placeholderColor = UIColor.gray
+                
+            }
+            else {
+                let update = inputArrayUnwrapped.replacingOccurrences(of: name+":", with: "")
+                row.value = Double(update)
+                
+            }
+        }
+    }
+    
+    
+    func checkIfBlankStringToComponentPush(row: PushRow<String>, inputArray: [String]?, name: String, number: Int){
+        
+        if inputArray!.count > number{
+            print(name)
+            let inputArrayUnwrapped = (inputArray?[number])!
+            //since pushrows are usually the first ones they're named as just the name, so we don't need number below (as we did above)
+            if inputArrayUnwrapped == name+":" {
+                //noValue instead of row.placeholder since this is a push row
+                row.noValueDisplayText = name
+                
+            }
+            else {
+                let update = inputArrayUnwrapped.replacingOccurrences(of: name+":", with: "")
+                row.value = update
+                row.cell.detailTextLabel?.textColor = UIColor.black //have to do this cause or else it is grey
+                
+            }
+        }
+    }
+    
+    
+    
+    
 
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let descriptionString = currentDataJSON["description"].string
+        let diagnosisString = currentDataJSON["diagnosis"].string
+        let resolutionString = currentDataJSON["resolution"].string
+        let descriptionComponents = descriptionString?.components(separatedBy: ";")
+        let diagnosisComponents = diagnosisString?.components(separatedBy: ";")
+        let resolutionComponents = resolutionString?.components(separatedBy: ";")
+        let serviceString = currentDataJSON["service_type"].string
+        let serviceComponents = serviceString?.components(separatedBy: ";")
+        let amountString = currentDataJSON["service_amount"].string
+        let amountComponents = amountString?.components(separatedBy: ";")
+        let fixtureTypeakaFeatureString = currentDataJSON["features"].string
+        let fixtureTypeakaFeatureComponents = fixtureTypeakaFeatureString?.components(separatedBy: ";")
+        let finishString = currentDataJSON["finish"].string
+        let finishComponents = finishString?.components(separatedBy: ";")
+        let brandsString = currentDataJSON["brands"].string
+        let brandsComponents = brandsString?.components(separatedBy: ";")
+        let locationakaProductString = currentDataJSON["product"].string
+        let locationakaProductComponents = locationakaProductString?.components(separatedBy: ";")
+
         
-        print(currentDataJSON)
-        //
+
+
         navigationItem.title = "New Job"
         navigationController?.navigationBar.prefersLargeTitles = false
 
@@ -132,68 +212,18 @@ class ContractNewFormViewController: FormViewController {
                 $0.tag = "customer"
                 $0.hidden = "$option != 'Main'"
             }
-//            <<< TextRow(){row in
-//                row.title = "CUSTOMER:"
-//                row.placeholder = "Customer Type"
-//                row.placeholderColor = UIColor.gray
-//        }
-            
-            
-            
-            
-//            <<< DateInlineRow() {
-//                $0.title = "DateInlineRow"
-//                $0.value = Date()
-//            }
-//
-//            <<< TimeInlineRow(){
-//                $0.title = "TimeInlineRow"
-//                $0.value = Date()
-//            }
-//            <<< SwitchRow("Show Next Row"){
-//                $0.title = $0.tag
-//            }
-//            <<< SwitchRow("Show Next Section"){
-//                $0.title = $0.tag
-//                $0.hidden = .function(["Show Next Row"], { form -> Bool in
-//                    let row: RowOf<Bool>! = form.rowBy(tag: "Show Next Row")
-//                    return row.value ?? false == false
-//                })
-//            }
-//
-//            +++ Section(footer: "This section is shown only when 'Show Next Row' switch is enabled"){
-//                $0.hidden = .function(["Show Next Section"], { form -> Bool in
-//                    let row: RowOf<Bool>! = form.rowBy(tag: "Show Next Section")
-//                    return row.value ?? false == false
-//                })
-//            }
-//            <<< TextRow() {
-//                $0.placeholder = "Gonna dissapear soon!!"
-//            }
-
-
-//        form.last! <<< SegmentedRow<String>("Segments2") { $0.title = "Choose an animal"; $0.value = "🐼"; $0.options = ["🐼", "🐶", "🐻"]
-//            }.onCellSelection { cell, row in
-//                print("\(cell) for \(row) got selected")
-//        }
-//        form.last! <<< LabelRow("Confirm") {
-//            $0.title = "Are you sure you do not want the 🐼?"
-//            $0.hidden = "$Segments2 == '🐼'"
-//            }
-
-            
-            
-
-            //TO HERE
             
             
             <<< PushRow<String>() {row in
                 row.tag = "customer_of"
                 row.title = "CUSTOMER OF:"
                 row.options = ["AHS", "NON-AHS"]
-                checkIfBlankAndOthersPushRow(tagChosen: "Customer Type" ,row: row)
+                let tagHere = "Customer Type"
+                checkIfBlankAndOthersPushRow(tagChosen: tagHere, row: row)
                 row.selectorTitle = "Pick One"
+                
             }
+            
 
             <<< TextRow(){row in
                 row.tag = "Dispatch_ID"
@@ -302,69 +332,103 @@ class ContractNewFormViewController: FormViewController {
             $0.hidden = "$option != 'Specs'"
             }
             
+            
+            //TODO: The Description and stuff don't work for pulling
+            //
+            //
+            //
+
             <<< PushRow<String>() {row in
-                row.tag = "description[Description]"
+                row.tag = "description" //TODO: This needs to be fixed (same with all below)
                 row.title = "DESCRIPTION:"
                 row.options = ["Test 2", "Leaking Toilet"]
-                checkIfBlankAndOthersPushRow(tagChosen: "Description",row: row)
-                row.selectorTitle = "Choose a Plumber"
-                }.onPresent { from, to in
-                    to.dismissOnSelection = true
-                    to.dismissOnChange = true
+                row.selectorTitle = "Choose one"
+                checkIfBlankStringToComponentPush(row: row, inputArray: descriptionComponents, name: "Description", number: 0)
+
+                }
+            
+            <<< PushRow<String>() {row in
+                row.tag = "diagnosis"
+                row.title = "DIAGNOSIS:"
+                row.options = ["Malfunctioning Flush Valve Seal"]
+                row.selectorTitle = "Choose one"
+                checkIfBlankStringToComponentPush(row: row, inputArray: diagnosisComponents, name: "Diagnosis", number: 0)
+            }
+            
+            <<< PushRow<String>() {row in
+                row.tag = "resolution"
+                row.title = "RESOLUTION:"
+                row.options = ["Replaced Flush Valve Gasket"]
+                row.selectorTitle = "Choose one"
+                checkIfBlankStringToComponentPush(row: row, inputArray: resolutionComponents, name: "Resolution", number: 0)
+            }
+            <<< LabelRow(){row in
+                row.cell.backgroundColor = UIColor.clear
+                
+            }
+
+            <<< TextRow(){row in
+                row.tag = "description[1]"
+                row.title = "DESCRIPTION 1:"
+                checkIfBlankStringToComponentText(row: row, inputArray: descriptionComponents, name: "Description1", number: 1)
+                
+                
             }
             
             <<< TextRow(){row in
-                row.title = "DESCRIPTION:"
-                row.placeholder = "Description"
-                row.placeholderColor = UIColor.gray
-        }
+                row.tag = "diagnosis[1]"
+                row.title = "DIAGNOSIS 1:"
+                checkIfBlankStringToComponentText(row: row, inputArray: diagnosisComponents, name: "Diagnosis1", number: 1)
+            }
             <<< TextRow(){row in
-                row.title = "DIAGNOSIS:"
-                row.placeholder = "Diagnosis"
-                row.placeholderColor = UIColor.gray
-        }
-            <<< TextRow(){row in
-                row.title = "RESOLUTION:"
-                row.placeholder = "Resolution"
-                row.placeholderColor = UIColor.gray
-        }
+                row.tag = "resolution[1]"
+                row.title = "RESOLUTION 1:"
+                checkIfBlankStringToComponentText(row: row, inputArray: resolutionComponents, name: "Resolution1", number: 1)
+            }
             <<< LabelRow(){row in
                 row.cell.backgroundColor = UIColor.clear
                 
             }
             <<< TextRow(){row in
+                row.tag = "description[2]"
                 row.title = "DESCRIPTION 2:"
-                row.placeholder = "Description"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankStringToComponentText(row: row, inputArray: descriptionComponents, name: "Description2", number: 2)
+
             }
+            
             <<< TextRow(){row in
+                row.tag = "diagnosis[2]"
                 row.title = "DIAGNOSIS 2:"
-                row.placeholder = "Diagnosis"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankStringToComponentText(row: row, inputArray: diagnosisComponents, name: "Diagnosis2", number: 2)
             }
             <<< TextRow(){row in
+                row.tag = "resolution[2]"
                 row.title = "RESOLUTION 2:"
-                row.placeholder = "Resolution"
-                row.placeholderColor = UIColor.gray
-        }
+                checkIfBlankStringToComponentText(row: row, inputArray: resolutionComponents, name: "Resolution2", number: 2)
+            }
             <<< LabelRow(){row in
                 row.cell.backgroundColor = UIColor.clear
                 
-            }
+        }
             <<< TextRow(){row in
+                row.tag = "description[3]"
                 row.title = "DESCRIPTION 3:"
-                row.placeholder = "Description"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankStringToComponentText(row: row, inputArray: descriptionComponents, name: "Description3", number: 3)
             }
+            
             <<< TextRow(){row in
+                row.tag = "diagnosis[3]"
                 row.title = "DIAGNOSIS 3:"
-                row.placeholder = "Diagnosis"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankStringToComponentText(row: row, inputArray: diagnosisComponents, name: "Diagnosis3", number: 3)
             }
             <<< TextRow(){row in
+                row.tag = "resolution[3]"
                 row.title = "RESOLUTION 3:"
-                row.placeholder = "Resolution"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankStringToComponentText(row: row, inputArray: resolutionComponents, name: "Resolution3", number: 3)
+            }
+            <<< LabelRow(){row in
+                row.cell.backgroundColor = UIColor.clear
+                
         }
         
         form +++ Section("Service & Payment"){
@@ -372,16 +436,23 @@ class ContractNewFormViewController: FormViewController {
             $0.hidden = "$option != 'Service'"
             }
             
-            <<< TextRow(){row in
+            <<< PushRow<String>() {row in
+                row.tag = "service_type"
                 row.title = "SERVICE:"
-                row.placeholder = "Service Type"
-                row.placeholderColor = UIColor.gray
+                row.options = ["General Service"]
+                row.selectorTitle = "Choose one"
+                checkIfBlankStringToComponentPush(row: row, inputArray: serviceComponents, name: "ServiceType", number: 0)
             }
-            <<< DecimalRow() {
-                $0.title = "AMOUNT:"
-                $0.formatter = DecimalFormatter()
-                $0.useFormatterDuringInput = true
-                //$0.useFormatterOnDidBeginEditing = true
+            
+            //HAVE TO CHANGE
+            <<< DecimalRow() {row in
+                row.tag = "service_amount"
+                row.title = "AMOUNT:"
+                row.formatter = DecimalFormatter()
+                row.useFormatterDuringInput = true
+                
+                checkIfBlankStringToComponentDecimal(row: row, inputArray: amountComponents, name: "Amount", number: 0)
+                
                 }.cellSetup { cell, _  in
                     cell.textField.keyboardType = .numberPad
             }
@@ -391,32 +462,62 @@ class ContractNewFormViewController: FormViewController {
             }
 
             <<< TextRow(){row in
-                row.title = "SERVICE 2:"
-                row.placeholder = "Service Type"
-                row.placeholderColor = UIColor.gray
+                row.tag = "service_type 1"
+                row.title = "SERVICE 1:"
+                checkIfBlankStringToComponentText(row: row, inputArray: serviceComponents, name: "ServiceType1", number: 1)
+                
             }
-            <<< DecimalRow() {
-                $0.title = "AMOUNT 2:"
-                $0.formatter = DecimalFormatter()
-                $0.useFormatterDuringInput = true
-                //$0.useFormatterOnDidBeginEditing = true
+            <<< DecimalRow() {row in
+                row.tag = "service_amount 1"
+                row.title = "AMOUNT 1:"
+                row.formatter = DecimalFormatter()
+                row.useFormatterDuringInput = true
+                
+                checkIfBlankStringToComponentDecimal(row: row, inputArray: amountComponents, name: "Amount1", number: 1)
+                
                 }.cellSetup { cell, _  in
                     cell.textField.keyboardType = .numberPad
             }
             <<< LabelRow(){row in
                 row.cell.backgroundColor = UIColor.clear
                 
-        }
-            <<< TextRow(){row in
-                row.title = "SERVICE 3:"
-                row.placeholder = "Service Type"
-                row.placeholderColor = UIColor.gray
             }
-            <<< DecimalRow() {
-                $0.title = "AMOUNT 3:"
-                $0.formatter = DecimalFormatter()
-                $0.useFormatterDuringInput = true
-                //$0.useFormatterOnDidBeginEditing = true
+            
+            <<< TextRow(){row in
+                row.tag = "service_type 2"
+                row.title = "SERVICE 2:"
+                checkIfBlankStringToComponentText(row: row, inputArray: serviceComponents, name: "ServiceType2", number: 2)
+                
+            }
+            <<< DecimalRow() {row in
+                row.tag = "service_amount 2"
+                row.title = "AMOUNT 2:"
+                row.formatter = DecimalFormatter()
+                row.useFormatterDuringInput = true
+                
+                checkIfBlankStringToComponentDecimal(row: row, inputArray: amountComponents, name: "Amount2", number: 2)
+                
+                }.cellSetup { cell, _  in
+                    cell.textField.keyboardType = .numberPad
+            }
+            <<< LabelRow(){row in
+                row.cell.backgroundColor = UIColor.clear
+                
+            }
+            <<< TextRow(){row in
+                row.tag = "service_type 3"
+                row.title = "SERVICE 3:"
+                checkIfBlankStringToComponentText(row: row, inputArray: serviceComponents, name: "ServiceType3", number: 3)
+                
+            }
+            <<< DecimalRow() {row in
+                row.tag = "service_amount 3"
+                row.title = "AMOUNT 3:"
+                row.formatter = DecimalFormatter()
+                row.useFormatterDuringInput = true
+                
+                checkIfBlankStringToComponentDecimal(row: row, inputArray: amountComponents, name: "Amount3", number: 3)
+                
                 }.cellSetup { cell, _  in
                     cell.textField.keyboardType = .numberPad
             }
@@ -429,73 +530,112 @@ class ContractNewFormViewController: FormViewController {
             $0.hidden = "$option != 'Products'"
             }
             
-            <<< TextRow(){row in
+            <<< PushRow<String>() {row in
+                row.tag = "location"
                 row.title = "LOCATION:"
-                row.placeholder = "Location"
-                row.placeholderColor = UIColor.gray
-        }
-            <<< TextRow(){row in
+                row.options = ["Kitchen", "Master Bath", "Guest Bath", "Powder Room", "Garage", "Other"]
+                row.selectorTitle = "Choose one"
+                checkIfBlankStringToComponentPush(row: row, inputArray: locationakaProductComponents, name: "Location", number: 0)
+            }
+            
+            <<< PushRow<String>() {row in
+                row.tag = "brands"
                 row.title = "BRANDS:"
-                row.placeholder = "Brands"
-                row.placeholderColor = UIColor.gray
-        }
-            <<< TextRow(){row in
+                row.options = ["Moen", "Price Pfister", "Kohler", "Delta", "Grohe", "Other"]
+                row.selectorTitle = "Choose one"
+                checkIfBlankStringToComponentPush(row: row, inputArray: brandsComponents, name: "Brands", number: 0)
+            }
+            
+            <<< PushRow<String>() {row in
+                row.tag = "fixture type"
                 row.title = "FIXTURE TYPE:"
-                row.placeholder = "Fixture Type"
-                row.placeholderColor = UIColor.gray
-        }
-            <<< TextRow(){row in
+                row.options = ["Bathroom Faucet Widespread", "Toilet", "Kithchen Faucet", "Bathroom Faucet Center Set", "Tub Shower", "Shower Only", "Tub Only", "Laundry Valve", "Lab Sink", "Water Heater", "Other"]
+                row.selectorTitle = "Choose one"
+                checkIfBlankStringToComponentPush(row: row, inputArray: fixtureTypeakaFeatureComponents, name: "Fixture", number: 0)
+            }
+            
+            <<< PushRow<String>() {row in
+                row.tag = "finish"
                 row.title = "FINISH/COLOR:"
-                row.placeholder = "Finish/Color"
-                row.placeholderColor = UIColor.gray
+                row.options = ["Chrome", "Brush Nickel", "Oil-Rubbed Bronze"]
+                row.selectorTitle = "Choose one"
+                checkIfBlankStringToComponentPush(row: row, inputArray: finishComponents, name: "FinishColor", number: 0)
+            }
+            
+            <<< LabelRow(){row in
+                row.cell.backgroundColor = UIColor.clear
+                
+            }
+            
+            <<< TextRow(){row in
+                row.tag = "location1"
+                row.title = "LOCATION 1:"
+                checkIfBlankStringToComponentText(row: row, inputArray: locationakaProductComponents, name: "Location1", number: 1)
+        }
+            <<< TextRow(){row in
+                row.tag = "brands1"
+                row.title = "BRANDS 1:"
+                checkIfBlankStringToComponentText(row: row, inputArray: brandsComponents, name: "Brands1", number: 1)
+
+        }
+            <<< TextRow(){row in
+                row.tag = "fixture1"
+                row.title = "FIXTURE TYPE 1:"
+                checkIfBlankStringToComponentText(row: row, inputArray: fixtureTypeakaFeatureComponents, name: "Fixture1", number: 1)
+        }
+            <<< TextRow(){row in
+                row.tag = "finish1"
+                row.title = "FINISH/COLOR 1:"
+                checkIfBlankStringToComponentText(row: row, inputArray: finishComponents, name: "FinishColor1", number: 1)
         }
             <<< LabelRow(){row in
                 row.cell.backgroundColor = UIColor.clear
                 
-        }
-            <<< TextRow(){row in
+            } <<< TextRow(){row in
+                row.tag = "location2"
                 row.title = "LOCATION 2:"
-                row.placeholder = "Location"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankStringToComponentText(row: row, inputArray: locationakaProductComponents, name: "Location2", number: 2)
             }
             <<< TextRow(){row in
+                row.tag = "brands2"
                 row.title = "BRANDS 2:"
-                row.placeholder = "Brands"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankStringToComponentText(row: row, inputArray: brandsComponents, name: "Brands2", number: 2)
+                
             }
             <<< TextRow(){row in
+                row.tag = "fixture2"
                 row.title = "FIXTURE TYPE 2:"
-                row.placeholder = "Fixture Type"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankStringToComponentText(row: row, inputArray: fixtureTypeakaFeatureComponents, name: "Fixture2", number: 2)
             }
             <<< TextRow(){row in
+                row.tag = "finish2"
                 row.title = "FINISH/COLOR 2:"
-                row.placeholder = "Finish/Color"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankStringToComponentText(row: row, inputArray: finishComponents, name: "FinishColor2", number: 2)
             }
             <<< LabelRow(){row in
                 row.cell.backgroundColor = UIColor.clear
                 
         }
             <<< TextRow(){row in
+                row.tag = "location3"
                 row.title = "LOCATION 3:"
-                row.placeholder = "Location"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankStringToComponentText(row: row, inputArray: locationakaProductComponents, name: "Location3", number: 3)
             }
             <<< TextRow(){row in
+                row.tag = "brands3"
                 row.title = "BRANDS 3:"
-                row.placeholder = "Brands"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankStringToComponentText(row: row, inputArray: brandsComponents, name: "Brands3", number: 3)
+                
             }
             <<< TextRow(){row in
+                row.tag = "fixture3"
                 row.title = "FIXTURE TYPE 3:"
-                row.placeholder = "Fixture Type"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankStringToComponentText(row: row, inputArray: fixtureTypeakaFeatureComponents, name: "Fixture3", number: 3)
             }
             <<< TextRow(){row in
+                row.tag = "finish3"
                 row.title = "FINISH/COLOR 3:"
-                row.placeholder = "Finish/Color"
-                row.placeholderColor = UIColor.gray
+                checkIfBlankStringToComponentText(row: row, inputArray: finishComponents, name: "FinishColor3", number: 3)
             }
             <<< LabelRow(){row in
                 row.cell.backgroundColor = UIColor.clear
