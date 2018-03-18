@@ -79,9 +79,9 @@ class SignatureViewController: UIViewController {
 //
         guard let imageConverted = imageChange(with: signatureDraw) else {return}
         guard let imageData : Data = UIImagePNGRepresentation(imageConverted) else {return}
+        let str64 = imageData.base64EncodedData(options: .lineLength64Characters)
         
-        print(imageData)
-//        let image : UIImage = UIImage(image: imageConverted!)
+        print(str64)
 //        let imageData: Data = UIImagePNGRepresentation(image)!
 //        let str64 = imageData.base64EncodedData(options: .lineLength64Characters)
 //        print(str64)

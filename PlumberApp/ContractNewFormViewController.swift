@@ -17,7 +17,6 @@ class ContractNewFormViewController: FormViewController {
 
     
     var currentDataJSON : JSON = [
-        "features" : "Features:Bathroom Faucet Widespread;",//DONE
         "paid_by" : "check",
         "IsActive" : JSON.null,
         "Collected" : "yes",
@@ -28,8 +27,6 @@ class ContractNewFormViewController: FormViewController {
         "id" : 1648,
         "is_paid" : JSON.null,
         "submit_signature" : JSON.null,
-        "brands" : "Brands:Price Pfister ;",//DONE
-        "finish" : "Finish:Chrome;", //DONE
         "Invoice_Number" : "801648",
         "Check" : "5345345",
         "save_signature" : JSON.null,
@@ -46,6 +43,7 @@ class ContractNewFormViewController: FormViewController {
     
     @IBAction func signaturePage(_ sender: Any) {
         print("Signature")
+        
         
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
@@ -79,10 +77,18 @@ class ContractNewFormViewController: FormViewController {
             row.noValueDisplayText = tagChosen
         }
         row.selectorTitle = "Pick One"
-//        row.onChange({ [unowned self] row in
-//            self.checkIfBlankAndOthersPushRow(tagChosen: tagChosen, row: row)
-//            print("This onChange Works")
-//        })
+        row.onChange({ [unowned self] row in
+            //self.checkIfBlankAndOthersPushRow(tagChosen: tagChosen, row: row)
+            print("This onChange Works")
+            guard let updatedValue = row.value else {
+                self.currentDataJSON[row.tag!].stringValue = ""
+                print(self.currentDataJSON[row.tag!])
+
+                return
+            }
+            self.currentDataJSON[row.tag!].stringValue = updatedValue
+            print(self.currentDataJSON[row.tag!])
+        })
         
     }
     
@@ -94,6 +100,7 @@ class ContractNewFormViewController: FormViewController {
             row.placeholder = tagChosen
             row.placeholderColor = UIColor.gray
         }
+        
         
         
     }
@@ -642,6 +649,10 @@ class ContractNewFormViewController: FormViewController {
                 
         }
 
+        
+        
+        
+        
 
         tableView.tableFooterView = UIView()
 
