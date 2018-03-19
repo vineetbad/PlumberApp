@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07595A66205F405200516C2D /* LastSignatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07595A65205F405200516C2D /* LastSignatureViewController.swift */; };
 		07BB807B2033CF8800092CEF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BB807A2033CF8800092CEF /* AppDelegate.swift */; };
 		07BB80802033CF8800092CEF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07BB807E2033CF8800092CEF /* Main.storyboard */; };
 		07BB80822033CF8800092CEF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07BB80812033CF8800092CEF /* Assets.xcassets */; };
@@ -14,11 +15,12 @@
 		07BB808E2033D36A00092CEF /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BB808D2033D36A00092CEF /* LogInViewController.swift */; };
 		07BB80902035005500092CEF /* PendingContractsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BB808F2035005500092CEF /* PendingContractsTableViewController.swift */; };
 		07BB8092203541C300092CEF /* ContractNewFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BB8091203541C300092CEF /* ContractNewFormViewController.swift */; };
-		07BB8096203BB2B900092CEF /* SignatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BB8095203BB2B900092CEF /* SignatureViewController.swift */; };
+		07BB8096203BB2B900092CEF /* FirstSignatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BB8095203BB2B900092CEF /* FirstSignatureViewController.swift */; };
 		18DCB291B39F63AA7B2EE8A3 /* Pods_PlumberApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE9BAF098C84B180A6FB4274 /* Pods_PlumberApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		07595A65205F405200516C2D /* LastSignatureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastSignatureViewController.swift; sourceTree = "<group>"; };
 		07BB80772033CF8800092CEF /* PlumberApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlumberApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07BB807A2033CF8800092CEF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		07BB807F2033CF8800092CEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -28,7 +30,7 @@
 		07BB808D2033D36A00092CEF /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		07BB808F2035005500092CEF /* PendingContractsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingContractsTableViewController.swift; sourceTree = "<group>"; };
 		07BB8091203541C300092CEF /* ContractNewFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractNewFormViewController.swift; sourceTree = "<group>"; };
-		07BB8095203BB2B900092CEF /* SignatureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureViewController.swift; sourceTree = "<group>"; };
+		07BB8095203BB2B900092CEF /* FirstSignatureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstSignatureViewController.swift; sourceTree = "<group>"; };
 		0C954B22E0CE0145C5C3BBAA /* Pods-PlumberApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlumberApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-PlumberApp/Pods-PlumberApp.release.xcconfig"; sourceTree = "<group>"; };
 		17E4A3C80B1A5490C029199A /* Pods-PlumberApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlumberApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PlumberApp/Pods-PlumberApp.debug.xcconfig"; sourceTree = "<group>"; };
 		EE9BAF098C84B180A6FB4274 /* Pods_PlumberApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlumberApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -73,7 +75,8 @@
 				07BB80862033CF8800092CEF /* Info.plist */,
 				07BB808F2035005500092CEF /* PendingContractsTableViewController.swift */,
 				07BB8091203541C300092CEF /* ContractNewFormViewController.swift */,
-				07BB8095203BB2B900092CEF /* SignatureViewController.swift */,
+				07BB8095203BB2B900092CEF /* FirstSignatureViewController.swift */,
+				07595A65205F405200516C2D /* LastSignatureViewController.swift */,
 			);
 			path = PlumberApp;
 			sourceTree = "<group>";
@@ -239,8 +242,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				07BB807B2033CF8800092CEF /* AppDelegate.swift in Sources */,
-				07BB8096203BB2B900092CEF /* SignatureViewController.swift in Sources */,
+				07BB8096203BB2B900092CEF /* FirstSignatureViewController.swift in Sources */,
 				07BB8092203541C300092CEF /* ContractNewFormViewController.swift in Sources */,
+				07595A66205F405200516C2D /* LastSignatureViewController.swift in Sources */,
 				07BB80902035005500092CEF /* PendingContractsTableViewController.swift in Sources */,
 				07BB808E2033D36A00092CEF /* LogInViewController.swift in Sources */,
 			);

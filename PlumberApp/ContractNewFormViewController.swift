@@ -17,33 +17,67 @@ class ContractNewFormViewController: FormViewController {
 
     
     var currentDataJSON : JSON = [
-        "paid_by" : "check",
+ 
+        "state" : "",
+        "features" : "",
+        "ph_mobile" : "",
+        "paid_by" : "",
         "IsActive" : JSON.null,
-        "Collected" : "yes",
+        "Collected" : "",
+        "Dispatch_ID" : "",
+        "ph_alternate" : "",
         "start_order_date" : JSON.null,
-        "Auth_Amount" : "5000",
-        "Auth" : "124996",
-        "service_fee" : "5000",
-        "id" : 1648,
+        "GateCode" : "",
+        "Auth_Amount" : "",
+        "Auth" : "",
+        "service_fee" : "",
+        "id" : JSON.null,
         "is_paid" : JSON.null,
+        "zip" : JSON.null,
         "submit_signature" : JSON.null,
-        "Invoice_Number" : "801648",
-        "Check" : "5345345",
+        "tenant_phone" : "",
+        "brands" : "",
+        "finish" : "",
+        "tenant" : "",
+        "fname" : "",
+        "Invoice_Number" : "",
+        "resolution" : "Resolution: ;",
+        "Check" : "",
+        "city" : "",
         "save_signature" : JSON.null,
+        "email" : "",
         "ModifiedDate" : JSON.null,
         "note" : JSON.null,
-        "disclaimer" : "Aladdin’s Plumbing is not responsible for damage to clay, orangeberg or improperly installed lines or pre-existing conditions.,The law requires that AP gives you a notice explaining your right to cancel for any work performed that is paid for. Please initial If Aladdin’s Plumbing has given you a notice of the ‘3 Day Right to Cancel”. This contractor caries commercial general liability insurance written by Farmers Insurance. You may call 831.688.8664 to check coverage.",
+        "address" : "",
+        "description" : "Description: ",
+        "disclaimer" : "",
         "sign_bool" : JSON.null,
         "order_date" : JSON.null,
-        "total_due" : "90",
-        "product" : "Location:Kitchen;",
+        "service_type" : "ServiceType: ;ServiceType1:;ServiceType2:;ServiceType3:;ServiceType4:;",
+        "total_due" : "",
+        "customer_of" : "",
+        "lname" : "",
+        "diagnosis" : "Diagnosis:;",
+        "tech" : "",
+        "service_amount" : "Amount:;Amount1:;Amount2:;Amount3:;Amount4:;",
+        "product" : "Location:;",
+        "ph_primary" : ""
     ]
+    
 
     var isNewContract = true
     
+    @IBOutlet var signatureTextBox: UIButton!
     @IBAction func signaturePage(_ sender: Any) {
-        print("Signature")
         
+        if currentDataJSON["sign_bool"] == true {
+            
+            performSegue(withIdentifier: "LastSign", sender: self)
+            
+        }
+        else {
+            performSegue(withIdentifier: "FirstSign", sender: self)
+        }
         
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
@@ -63,6 +97,17 @@ class ContractNewFormViewController: FormViewController {
             row.placeholder = tagChosen
             row.placeholderColor = UIColor.gray
         }
+        row.onChange({ [unowned self] row in
+            guard let updatedValue = row.value else {
+                self.currentDataJSON[row.tag!].stringValue = ""
+                print(self.currentDataJSON[row.tag!])
+                
+                return
+            }
+            self.currentDataJSON[row.tag!].stringValue = updatedValue
+            print(self.currentDataJSON[row.tag!])
+        })
+        
         
         
     }
@@ -79,7 +124,6 @@ class ContractNewFormViewController: FormViewController {
         row.selectorTitle = "Pick One"
         row.onChange({ [unowned self] row in
             //self.checkIfBlankAndOthersPushRow(tagChosen: tagChosen, row: row)
-            print("This onChange Works")
             guard let updatedValue = row.value else {
                 self.currentDataJSON[row.tag!].stringValue = ""
                 print(self.currentDataJSON[row.tag!])
@@ -100,6 +144,16 @@ class ContractNewFormViewController: FormViewController {
             row.placeholder = tagChosen
             row.placeholderColor = UIColor.gray
         }
+        row.onChange({ [unowned self] row in
+            guard let updatedValue = row.value else {
+                self.currentDataJSON[row.tag!].stringValue = ""
+                print(self.currentDataJSON[row.tag!])
+                
+                return
+            }
+            self.currentDataJSON[row.tag!].stringValue = updatedValue
+            print(self.currentDataJSON[row.tag!])
+        })
         
         
         
@@ -112,6 +166,16 @@ class ContractNewFormViewController: FormViewController {
             row.placeholder = tagChosen
             row.placeholderColor = UIColor.gray
         }
+        row.onChange({ [unowned self] row in
+            guard let updatedValue = row.value else {
+                self.currentDataJSON[row.tag!].stringValue = ""
+                print(self.currentDataJSON[row.tag!])
+                
+                return
+            }
+            self.currentDataJSON[row.tag!].stringValue = updatedValue
+            print(self.currentDataJSON[row.tag!])
+        })
        
         
         
@@ -133,6 +197,16 @@ class ContractNewFormViewController: FormViewController {
                 
             }
         }
+        row.onChange({ [unowned self] row in
+            guard let updatedValue = row.value else {
+                self.currentDataJSON[row.tag!].stringValue = ""
+                print(self.currentDataJSON[row.tag!])
+                
+                return
+            }
+            self.currentDataJSON[row.tag!].stringValue = updatedValue
+            print(self.currentDataJSON[row.tag!])
+        })
     }
     
     func checkIfBlankStringToComponentDecimal(row: DecimalRow, inputArray: [String]?, name: String, number: Int){
@@ -151,6 +225,16 @@ class ContractNewFormViewController: FormViewController {
                 
             }
         }
+        row.onChange({ [unowned self] row in
+            guard let updatedValue = row.value else {
+                self.currentDataJSON[row.tag!].stringValue = ""
+                print(self.currentDataJSON[row.tag!])
+                
+                return
+            }
+            self.currentDataJSON[row.tag!].doubleValue = updatedValue
+            print(self.currentDataJSON[row.tag!])
+        })
     }
     
     
@@ -172,6 +256,16 @@ class ContractNewFormViewController: FormViewController {
                 
             }
         }
+        row.onChange({ [unowned self] row in
+            guard let updatedValue = row.value else {
+                self.currentDataJSON[row.tag!].stringValue = ""
+                print(self.currentDataJSON[row.tag!])
+                
+                return
+            }
+            self.currentDataJSON[row.tag!].stringValue = updatedValue
+            print(self.currentDataJSON[row.tag!])
+        })
     }
     
     
@@ -291,6 +385,16 @@ class ContractNewFormViewController: FormViewController {
                     row.placeholder = "Zip"
                     row.placeholderColor = UIColor.gray
                 }
+                row.onChange({ [unowned self] row in
+                    guard let updatedValue = row.value else {
+                        self.currentDataJSON[row.tag!].stringValue = ""
+                        print(self.currentDataJSON[row.tag!])
+                        
+                        return
+                    }
+                    self.currentDataJSON[row.tag!].stringValue = String(updatedValue)
+                    print(self.currentDataJSON[row.tag!])
+                })
                 //TODO: Find a way to convert to Int
                 
             }
@@ -322,6 +426,17 @@ class ContractNewFormViewController: FormViewController {
                     row.placeholder = "Email ID"
                     row.placeholderColor = UIColor.gray
                 }
+                
+                row.onChange({ [unowned self] row in
+                    guard let updatedValue = row.value else {
+                        self.currentDataJSON[row.tag!].stringValue = ""
+                        print(self.currentDataJSON[row.tag!])
+                        
+                        return
+                    }
+                    self.currentDataJSON[row.tag!].stringValue = updatedValue
+                    print(self.currentDataJSON[row.tag!])
+                })
             }
             <<< TextRow(){row in
                 row.tag = "tenant"

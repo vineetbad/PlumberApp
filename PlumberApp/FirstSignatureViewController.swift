@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SignatureViewController: UIViewController {
+class FirstSignatureViewController: UIViewController {
     var path = UIBezierPath()
     var startPoint = CGPoint()
     var touchPoint = CGPoint()
@@ -79,7 +79,7 @@ class SignatureViewController: UIViewController {
 //
         guard let imageConverted = imageChange(with: signatureDraw) else {return}
         guard let imageData : Data = UIImagePNGRepresentation(imageConverted) else {return}
-        let str64 = imageData.base64EncodedData(options: .lineLength64Characters)
+        let str64 = imageData.base64EncodedString()
         
         print(str64)
 //        let imageData: Data = UIImagePNGRepresentation(image)!
@@ -98,19 +98,3 @@ class SignatureViewController: UIViewController {
     
 }
 
-extension UIView {
-    
-    // OUTPUT 1
-    func dropShadow(scale: Bool = true) {
-        layer.masksToBounds = false
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 0.5
-        layer.shadowOffset = CGSize(width: -1, height: 1)
-        layer.shadowRadius = 1
-        
-        layer.shadowPath = UIBezierPath(rect: bounds).cgPath
-        layer.shouldRasterize = true
-        layer.rasterizationScale = scale ? UIScreen.main.scale : 1
-    }
-    
-}
